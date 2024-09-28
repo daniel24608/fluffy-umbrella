@@ -1,7 +1,7 @@
 import json
 
 # Path to the JSON file
-file_path = 'food_data.json'
+file_path = 'condensed_food_data.json'
 
 # Open and read the JSON file
 with open(file_path, 'r') as file:
@@ -19,10 +19,12 @@ survey_foods = data['SurveyFoods']
 def getCalandMacros(description):
     for food in survey_foods:
         if description == food['description']:
-            calories = next((nutrient['amount'] for nutrient in food['foodNutrients'] if nutrient['nutrient']['name'] == 'Energy'), None)
-            protein = next((nutrient['amount'] for nutrient in food['foodNutrients'] if nutrient['nutrient']['name'] == 'Protein'), None)
-            fat = next((nutrient['amount'] for nutrient in food['foodNutrients'] if nutrient['nutrient']['name'] == 'Total lipid (fat)'), None)
-            carb = next((nutrient['amount'] for nutrient in food['foodNutrients'] if nutrient['nutrient']['name'] == 'Carbohydrate, by difference'), None)
+            calories = food['calories']
+            protein = food['protein']
+            fat = food['fat']
+            carb = food['carb']
+
             return calories, protein, fat, carb
     return None
+
 
