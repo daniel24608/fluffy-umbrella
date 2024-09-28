@@ -78,6 +78,27 @@
             <option value="2">Female</option>
         </select>
 
+        <label for="minutes"> Minutes every workout</label>
+        <input type="number" id="minutes" required>
+
+        <label for="days">Workout days per week:</label>
+        <select id="days" required>
+            <option value="0">None</option>
+            <option value="1">1-2</option>
+            <option value="2">3-4</option>
+            <option value="3">5-6</option>
+            <option value="4">Everyday</option>
+        </select>
+        <label for="days">Weight Plan:</label>
+        <select id="days" required>
+            <option value="1">Choose plan</option>
+            <option value="1">Lose fast</option>
+            <option value="2">Lose slow</option>
+            <option value="3">Gain fast</option>
+            <option value="4">Gain slow</option>
+            <option value="5">Maintain Weight</option>
+        </select>
+
         <button type="submit">Calculate Macros</button>
     </form>
 
@@ -100,7 +121,9 @@
         const weight = parseFloat(document.getElementById('weight').value);
         const age = parseInt(document.getElementById('age').value);
         const gender = parseInt(document.getElementById('gender').value);
-
+        const minutesPerDay = parseInt(document.getElementById('minutes').value)
+        const DaysPerWeek = parseInt(document.getElementById('days').value)
+        const plan = parseInt(document.getElementById('plan').value)
         // Calculate height in cm and weight in kg
         const heightCm = (heightFeet * 30.48) + (heightInch * 2.54);
         const weightKg = weight * 0.453592;
