@@ -1,0 +1,5 @@
+Fitness Tracker-
+
+Th purpose of the program is to encourage users to pursue their fitness goals or to follow a healthy lifestyle. The program will be able to tailor a diet and exercise plan based on the users needs: lose weight, gain weight, or stay the same weight. The program will ask for the users goal and recommend a time frame
+
+The Tracker is able to request the users weight (lbs), height (ft and inches), age (yrs), and gender.
