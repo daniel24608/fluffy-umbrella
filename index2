@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macro Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        label, input, select {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Macro Calculator</h1>
+        <div>
+            <form action="{{url_for('create_post')}}?target={{url_for('user', u_name = logname)}}"
+                  method="post"
+                  enctype="multipart/form-data">
+                <input type="file" name="file" accept="image/*" required />
+                <input type="submit" name="create_post" value="upload" />
+                <input type="hidden" name="operation" value="create" />
+            </form>
+        </div>
+        <form id="macroForm">
+            <label for="heightFeet">Height (Feet):</label>
+            <input type="number" id="heightFeet" required>
+
+            <label for="heightInch">Height (Inches):</label>
+            <input type="number" id="heightInch" required>
+
+            <label for="weight">Weight (Pounds):</label>
+            <input type="number" id="weight" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" required>
+                <option value="1">Male</option>
+                <option value="2">Female</option>
+            </select>
+
+            <label for="minutes"> Minutes every workout</label>
+            <input type="number" id="minutes" required>
+
+            <label for="days">Workout days per week:</label>
+            <select id="days" required>
+                <option value="0">None</option>
+                <option value="1">1-2</option>
+                <option value="2">3-4</option>
+                <option value="3">5-6</option>
+                <option value="4">Everyday</option>
+            </select>
+            <label for="days">Weight Plan:</label>
+            <select id="days" required>
+                <option value="1">Choose plan</option>
+                <option value="1">Lose fast</option>
+                <option value="2">Lose slow</option>
+                <option value="3">Gain fast</option>
+                <option value="4">Gain slow</option>
+                <option value="5">Maintain Weight</option>
+            </select>
+
+            <button type="submit">Calculate Macros</button>
+        </form>
+
+        <div id="results" class="result" style="display: none;">
+            <h3>Your Macro Results</h3>
+            <p id="calories"></p>
+            <p id="carbs"></p>
+            <p id="proteins"></p>
+            <p id="fats"></p>
+        </div>
+        <h2>Food Entry</h2>
+        <form id="foodForm">
+            <label for="foodName">Food Name:</label>
+            <input type="text" id="foodName" required>
+
+            <label for="servingSize">Serving Size (grams):</label>
+            <input type="number" id="servingSize" required>
+
+            <button type="submit">Add Food</button>
+        </form>
+
+        <div id="foodResults" class="result" style="display: none;">
+            <h3>Food Added</h3>
+            <p id="foodInfo"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('macroForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Get form values
+            const heightFeet = parseFloat(document.getElementById('heightFeet').value);
+            const heightInch = parseFloat(document.getElementById('heightInch').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const age = parseInt(document.getElementById('age').value);
+            const gender = parseInt(document.getElementById('gender').value);
+            const minutesPerDay = parseInt(document.getElementById('minutes').value)
+            const DaysPerWeek = parseInt(document.getElementById('days').value)
+            const plan = parseInt(document.getElementById('plan').value)
+            // Calculate height in cm and weight in kg
+            const heightCm = (heightFeet * 30.48) + (heightInch * 2.54);
+            const weightKg = weight * 0.453592;
+
+            // Calculate BMR
+            let bmr;
+            if (gender === 1) { // Male
+                bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
+            } else { // Female
+                bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
+            }
+
+            // Calculate calories for different activity levels
+            const calories = bmr * 1.55; // Assuming moderate activity
+            const carbohydrates = (0.5 * calories) / 4;
+            const proteins = (0.3 * calories) / 4;
+            const fats = (0.2 * calories) / 9;
+
+            // Display results
+            document.getElementById('calories').innerText = `Daily Calories: ${calories.toFixed(2)}`;
+            document.getElementById('carbs').innerText = `Carbohydrates: ${carbohydrates.toFixed(2)}g`;
+            document.getElementById('proteins').innerText = `Proteins: ${proteins.toFixed(2)}g`;
+            document.getElementById('fats').innerText = `Fats: ${fats.toFixed(2)}g`;
+            document.getElementById('results').style.display = 'block';
+        });
+    </script>
+    <script>
+        // I need the Food_Data file. not sure how to implement this
+
+        // Function to search for a food item in the database
+        function findFood(foodName) {
+            return foodData.find(food => food.name.toLowerCase() === foodName.toLowerCase());
+        }
+
+        // Variables to store remaining calories
+        let remainingCalories = 0;
+
+        // Handling food form submission
+        document.getElementById('foodForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Get food name and serving size from the form
+            const foodName = document.getElementById('foodName').value;
+            const servingSize = parseFloat(document.getElementById('servingSize').value);
+
+            // Search for the food in the database
+            const food = findFood(foodName);
+
+            if (food) {
+                // Calculate calories based on serving size
+                const calories = (food.calories_per_100g / 100) * servingSize;
+
+                // Subtract the calories from the remaining calories
+                remainingCalories -= calories;
+
+                // Display food info and remaining calories
+                document.getElementById('foodInfo').innerText = `You added ${servingSize}g of ${food.name} (${calories.toFixed(2)} calories). Remaining daily calories: ${remainingCalories.toFixed(2)}.`;
+                document.getElementById('foodResults').style.display = 'block';
+            } else {
+                alert("Food not found.");
+            }
+        });
+
+        // Set the initial remaining calories to daily target
+        document.getElementById('macroForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Not sure how macro was calculated
+
+            // Set remainingCalories based on calculated daily calories
+            remainingCalories = calories;
+        });
+    </script>
+    <script>
+        // Function to check if the user is within the calorie limit and reward them
+        function checkCalorieLimit() {
+            if (remainingCalories > -50 && remainingCalories < 50) {
+                alert("Great job! You stayed within your calorie limit today. Reward unlocked!");
+            } else if (remainingCalories < -50) {
+                alert("You exceeded your calorie limit today. Try to stay on track tomorrow.");
+            } else {
+                alert("You are under your calorie limit. Make sure to meet your nutritional needs.");
+            }
+        }
+
+        // Call the reward function at the end of the day (using a button for now)
+        document.getElementById('checkRewardButton').addEventListener('click', checkCalorieLimit);
+    </script>
+
+    <button id="checkRewardButton">Check Calories and Get Reward</button>
+</body>
+</html>
