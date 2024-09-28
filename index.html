@@ -48,6 +48,17 @@
 
 <div class="container">
     <h1>Macro Calculator</h1>
+    <div>
+        <form
+          action="{{url_for('create_post')}}?target={{url_for('user', u_name = logname)}}"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <input type="file" name="file" accept="image/*" required />
+          <input type="submit" name="create_post" value="upload" />
+          <input type="hidden" name="operation" value="create" />
+        </form>
+      </div>
     <form id="macroForm">
         <label for="heightFeet">Height (Feet):</label>
         <input type="number" id="heightFeet" required>
