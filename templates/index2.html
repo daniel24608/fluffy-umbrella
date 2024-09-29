@@ -49,38 +49,38 @@
     <div class="container">
         <h1>Macro Calculator</h1>
 
-        <form action="/submit" method="get">
+        <form action="/submit" method="post">
             <label for="heightFeet">Height (Feet):</label>
-            <input type="number" id="heightFeet" required>
+            <input type="number" name = "heightInFeet" id="heightFeet" required>
 
             <label for="heightInch">Height (Inches):</label>
-            <input type="number" id="heightInch" required>
+            <input type="number" name = "heightInInches" id="heightInch" required>
 
             <label for="weight">Weight (Pounds):</label>
-            <input type="number" id="weight" required>
+            <input type="number" name = "weight" id="weight" required>
 
             <label for="age">Age:</label>
-            <input type="number" id="age" required>
+            <input type="number" name = "age" id="age" required>
 
             <label for="gender">Gender:</label>
-            <select id="gender" required>
+            <select name = "gender" id="gender" required>
                 <option value="1">Male</option>
                 <option value="2">Female</option>
             </select>
 
             <label for="minutes"> Minutes every workout</label>
-            <input type="number" id="minutes" required>
+            <input type="number" name = "minutes" id="minutes" required>
 
             <label for="days">Workout days per week:</label>
-            <select id="days" required>
+            <select name = "days" id="days" required>
                 <option value="0">None</option>
                 <option value="1">1-2</option>
                 <option value="2">3-4</option>
                 <option value="3">5-6</option>
                 <option value="4">Everyday</option>
             </select>
-            <label for="days">Weight Plan:</label>
-            <select id="days" required>
+            <label for="plan">Weight Plan:</label>
+            <select name = "plan" id="plan" required>
                 <option value="1">Choose plan</option>
                 <option value="1">Lose fast</option>
                 <option value="2">Lose slow</option>
@@ -89,7 +89,7 @@
                 <option value="5">Maintain Weight</option>
             </select>
 
-            <input type="submit">Calculate Macros</input>
+            <input type="submit">Calculate Macros
         </form>
 
         <div id="results" class="result" style="display: none;">
