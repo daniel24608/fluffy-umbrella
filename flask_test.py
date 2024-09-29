@@ -14,6 +14,12 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def index():
     return render_template('index2.html')
 
+@app.route('/submit', methods=['GET'])
+def result_page():
+    form_data = request.form
+    print(form_data[0])
+    return render_template('submit.html')
+
 @app.route('/upload', methods=['POST'])
 def upload_image():
     if 'image' not in request.files:

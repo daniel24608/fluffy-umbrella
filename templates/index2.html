@@ -48,16 +48,8 @@
 
     <div class="container">
         <h1>Macro Calculator</h1>
-        <div>
-            <form action="/upload"
-                  method="post"
-                  enctype="multipart/form-data">
-                  <input type="file" name="image" accept="image/*" capture="environment" required />
-                <input type="submit" name="create_post" value="upload" />
-                <input type="hidden" name="operation" value="create" />
-            </form>
-        </div>
-        <form id="macroForm">
+
+        <form action="/submit" method="get">
             <label for="heightFeet">Height (Feet):</label>
             <input type="number" id="heightFeet" required>
 
@@ -97,7 +89,7 @@
                 <option value="5">Maintain Weight</option>
             </select>
 
-            <button type="submit">Calculate Macros</button>
+            <input type="submit">Calculate Macros</input>
         </form>
 
         <div id="results" class="result" style="display: none;">
