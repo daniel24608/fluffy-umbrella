@@ -5,18 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Macro Calculator</title>
 </head>
-
+<link rel="stylesheet" href="/static/css/submit.css">
 
 <body>
-<div>
-    <form action="/upload"
-          method="post"
-          enctype="multipart/form-data">
-          <input type="file" name="image" accept="image/*" capture="environment" required />
-        <input type="submit" name="create_post" value="upload" />
-        <input type="hidden" name="operation" value="create" />
-    </form>
-</div>
+    <h1>Your Plan:</h1>
+    <div id="big-container">
+        <div id="container">
+            <div id="cal-div" class="nutrition-div">
+                <h2>Calories Remaining: </h2>
+                <p>Temp Value</p>
+                <progress id="cal-remaining" value="32" max="100"> 32% </progress>
+            </div>
+            
+            <div id="protein-div" class="nutrition-div">
+                <h2>Protein Remaining: </h2>
+                <p>Temp Value</p>
+                <progress id="protein-remaining" value="32" max="100"> 32% </progress>
+                </div>
+                <div id="fat-div" class="nutrition-div">
+                    <h2>Fat Remaining: </h2>
+                    <p>Temp Value</p>
+                    <progress id="fat-remaining" value="32" max="100"> 32% </progress>
+                </div>
+                <div id="carb-div" class="nutrition-div">
+                    <h2>Carbs Remaining: </h2>
+                    <p>Temp Value</p>
+                    <progress id="carb-remaining" value="32" max="100"> 32% </progress>
+                </div>
+            </div>
+
+        
+        <div class="form">
+            <form action="/upload"
+                method="post"
+                enctype="multipart/form-data">
+                <input type="file" name="image" accept="image/*" capture="environment" required />
+                <input type="submit" name="create_post" value="Upload" />
+                <input type="hidden" name="operation" value="create" />
+            </form>
+            <div class="most-recent-upload">
+                <h2>Most Recent Upload:</h2>
+                <p>Temp Value</p>
+                <h2>Estimated Calories</h2>
+                <p>Temp Value</p>
+                <h2>Estimated Protein</h2>
+                <p>Temp Value</p>
+                <h2>Estimated Fat</h2>
+                <p>Temp Value</p>
+                <h2>Estimated Carbs</h2>
+                <p>Temp Value</p>
+            </div>
+            
+        </div>
+        
+    </div>
 
 
 

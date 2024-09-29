@@ -12,12 +12,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index2.html')
+    return render_template('submit.html')
 
 @app.route('/submit', methods=['GET'])
 def result_page():
-    form_data = request.form
-    print(form_data[0])
+    
     return render_template('submit.html')
 
 @app.route('/upload', methods=['POST'])

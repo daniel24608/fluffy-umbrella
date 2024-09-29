@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+* {
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+body {
+    background-color: rgb(181, 181, 181);
+}
+h1 {
+    text-align: center;
+    font-size: 48px;
+}
+h2 {
+    font-size: 36px;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#big-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.nutrition-div {
+    width: 100%;
+    text-align: center;
+}
+
+form {
+    margin-top: 30px;
+    text-align: center;
+}
+
+progress {
+    scale: 1.6;
+    width: 60%;
+}
