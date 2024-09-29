@@ -22,14 +22,10 @@ def index():
     days = request.form.get('days')
 
     if(operation == 'create'):
-        return render_template('macro.html')
+        show_create()
+        return render_template('submit.html')
     
-    return render_template('submit.html')
-
-@app.route('/submit', methods=['GET'])
-def result_page():
-    
-    return render_template('submit.html')
+    return render_template('index2.html')
 
 @app.route('/submit', methods=['POST'])
 def show_create():
@@ -72,12 +68,16 @@ def show_create():
         calories =calories + 1000
 
     carbohydrates = (0.5 * calories) / 4
+    protein = (0.3 * calories) / 4
+    fat = (0.2 * calories) / 9
     context = {
         'bmr': bmr,
         "carbohydrates": carbohydrates,
+        "protein": protein,
+        "fat": fat,
         'calories': calories,
     }
-    return render_template('macro.html', **context)
+    return render_template('submit.html', **context)
 
 @app.route('/upload', methods=['POST'])
 def upload_image():
