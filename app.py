@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 import base64
 import requests
 import json
+import csv
 
 app = Flask(__name__)
 
@@ -15,6 +16,17 @@ UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Load food descriptions from CSV
+def load_food_descriptions():
+    food_descriptions = []
+    with open('food_descriptions.csv', 'r') as file:
+        csv_reader = csv.DictReader(file)
+        for row in csv_reader:
+            food_descriptions.append(row)
+    return food_descriptions
+
+FOOD_DESCRIPTIONS = load_food_descriptions()
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -32,9 +44,11 @@ def process_image(image_path):
         "anthropic-version": "2023-06-01"
     }
     
+    food_items = ", ".join([food['name'] for food in FOOD_DESCRIPTIONS])
+    
     payload = {
         "model": "claude-3-opus-20240229",
-        "max_tokens": 1000,  # Adjust this value as needed
+        "max_tokens": 100,  # Adjust this value as needed
         "messages": [
             {
                 "role": "user",
@@ -49,20 +63,31 @@ def process_image(image_path):
                     },
                     {
                         "type": "text",
-                        "text": "Analyze this image and provide a detailed description."
+                        "text": "Accurately identify food items from user-submitted photos. This means you must MATCH the photo to exactly one of the items in the 'food_descriptions.csv' database. The output should be in the format: [Food Item]: [key for dictionary of csv][Identified food name]."
                     }
                 ]
             }
         ],
-        "system": "You are an expert image analyst. Provide detailed, insightful observations about the image content, focusing on key elements, colors, composition, and any notable features. Your analysis should be thorough and professional."
+        "system": "Profession/Role: Food Recognition and Nutrition Assistant; Objective: Your task is to accurately identify food items from user-submitted photos. You must MATCH the photo to exactly one of the items in the 'food_descriptions.csv' database."
     }
     
     response = requests.post(ANTHROPIC_API_URL, headers=headers, json=payload)
     
     if response.status_code == 200:
-        return response.json()['content'][0]['text']
+        identified_food = response.json()['content'][0]['text'].strip()
+        return match_food_description(identified_food)
     else:
         return f"Error: {response.status_code}, {response.text}"
+    
+def match_food_description(identified_food):
+    if identified_food == "No match found":
+        return {"match": False, "message": "No matching food item found in the database."}
+    
+    for food in FOOD_DESCRIPTIONS:
+        if food['name'].lower() == identified_food.lower():
+            return {"match": True, "food_item": food}
+        return {"match": False, "message": f"Identified '{identified_food}', but no exact match found in the database."}
+    
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
